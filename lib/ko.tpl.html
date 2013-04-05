@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Pagamento ID: <?= $_POST["numeroOrdine"] ?> non autorizzato</title>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Bootstrap -->
+        <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <link href="css/main.css" rel="stylesheet" media="screen">
+    </head>
+    <body>
+        <script type="text/javascript" src="js/jquery.js"></script>
+        <script type="text/javascript" src="js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="js/main.js"></script>
+        <div id="wrap">
+          <!-- Begin page content -->
+          <div class="container">
+            <div class="page-header">
+                <h1>Richiesta Comodato ID <?= $_POST["numeroOrdine"] ?> <small>Transazione negata</small></h1>
+            </div>
+            <p class="lead alert alert-error">Pagamento non autorizzato</p>
+            <p>Il tuo pagamento non &egrave; stato accettato dai circuiti autorizzativi, a fronte di ulteriori tentativi negati di pagamento ti consigliamo di contattare l&#39;help desk della tua banca verificando il motivo del rifiuto.</p>
+            <p>Successivamente potrai ritentare il pagamento.</p>
+            <p>A seguire alcuni dati per il pagamento effettuato:</p>
+			<ul>
+				<li><strong>ID pagamento</strong>: <?= $_POST["numeroOrdine"]; ?></li>
+				<li><strong>Beneficiario</strong>: <?= $res["nome"]; ?>, classe <?= $res["classe"]; ?></li>
+				<li><strong>Richiesta</strong>: <?= $res["data_ins"]; ?></li>
+			</ul>
+			<p class="lead">Se vuoi effettuare un nuovo tentativo di pagamento clicca su <big>Riprova</big>, per modificare la tua richiesta iniziale clicca su <big>Modifica</big>.</p>
+			<form name="retry" action="pay.php" method="post" class="pull-left" style="padding-right: 30px;">
+				<input type="hidden" name="alunno" value="<?= $res["nome"]; ?>" />
+				<input type="hidden" name="emailCompratore" value="<?= $res["email"]; ?>" />
+				<input type="hidden" name="classe" value="<?= substr($res["classe"], 0, 1); ?>" />
+				<input type="hidden" name="sezione" value="<?= substr($res["classe"], 1, 2); ?>" />
+				<input type="hidden" name="totale" value="<?= $res["importo"];; ?>" />
+				<input type="hidden" name="tipoPagamento" value="CartCred" />
+				<input type="hidden" name="langCompratore" value="it" />
+				<input type="hidden" name="do" value="validate" />
+				<button type="submit" class="btn btn-primary btn-large" onclick="this.form.submit()">Riprova <img src="img/ucb-icn-g.png" alt="ucb-logo" style="width: 32px; height: 32px;" /></button>
+			</form>
+            <form name="edit" action="pay.php" method="post">
+                <input type="hidden" name="alunno" value="<?= $res["nome"]; ?>" />
+                <input type="hidden" name="emailCompratore" value="<?= $res["email"]; ?>" />
+                <input type="hidden" name="classe" value="<?= substr($res["classe"], 0, 1); ?>" />
+                <input type="hidden" name="sezione" value="<?= substr($res["classe"], 1, 2); ?>" />
+                <button type="submit" class="btn btn-warning btn-large" onclick="this.form.submit()">Modifica <img src="img/mod.png" alt="mod-icon" /></button>
+            </form>
+          </div>
+          <div id="push"></div>
+        </div>
+
+        <div id="footer">
+            <div class="container">
+                <p class="muted credit">Design&amp;Coding <a href="http://twitter.com/zerrossetto">@Zerrossetto</a> per <a href="http://www.itimottura.it">ITI Mottura</a> (CL). Rilasciato sotto licenza <a href="http://www.gnu.org/licenses/agpl-3.0.txt">GPLv3</a>, <a href="https://github.com/Zerrossetto/itimottura">scarica il codice</a></p>
+          </div>
+        </div>
+
+    </body>
+</html>
