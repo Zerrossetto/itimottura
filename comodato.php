@@ -1,9 +1,11 @@
 <?php
 function __autoload($class_name) { include "lib/". $class_name . ".php"; } 
 
+$title = "Modulo di pagamento comodati d&#39;uso";
+
 if (@$_POST["do"] != "validate")
 {
-	Helper::display_template();
+	Helper::display_template("richiesta-comodato");
 	die();
 }
 
@@ -56,13 +58,13 @@ if (count($errors) == 0)
 							  session_id());
 	} catch (PDOException $e) { 
 		$errors["database"] = "Errore durante la scrittura dei dati:<br />". $e->getMessage();
-		Helper::display_template();
+		Helper::display_template("richiesta-comodato");
 		$db = null;
 		die();
 	}
 	//redirecting to UCB
 	$mp = new MACPoster(array_merge($_POST, $settings));
 	$mp->open_connection ();
-} else { Helper::display_template($errors); }
+} else { Helper::display_template("richiesta-comodato", $errors); }
 
 ?>

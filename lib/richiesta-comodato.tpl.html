@@ -1,23 +1,6 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Modulo di pagamento comodati d&#39;uso</title>
-        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <!-- Bootstrap -->
-        <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
-        <link href="css/main.css" rel="stylesheet" media="screen">
-    </head>
-    <body onload="updateprice(document.forms[0])">
-        <script type="text/javascript" src="js/jquery.js"></script>
-        <script type="text/javascript" src="js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="js/main.js"></script>
-        <script type="text/javascript">
-            var prezzi = {<?= implode(", ", Helper::implodeDictionary(":", $arr, true)); ?>};
-        </script>
-        <div id="wrap">
-            <!-- Begin page content -->
-            <div class="container">
+            <script type="text/javascript">
+            	var prezzi = {<?= implode(", ", Helper::implodeDictionary(":", $arr, true)); ?>};
+        	</script>
             <div class="page-header">
                 <h1>Comodato d&#39;uso <small>Richiesta di autorizzazione</small></h1>
             </div>
@@ -29,7 +12,7 @@
             <?php else: ?>
             <p class="lead">Compila i campi sottostanti per procedere alla richiesta di comodato</p>
             <p>
-                <form method="post" action="pay.php">
+                <form method="post" action="<?= basename($_SERVER["PHP_SELF"]) ?>">
                     <p>
                         <label for="alunno" >Nome dell&#39;alunno</label>
                         <input type="text" name="alunno" maxlength="75" value="<?= @$_POST["alunno"] ?>" onkeydown="canTransmit(this.form)" />
@@ -91,13 +74,3 @@
 
           <div id="push"></div>
         <?php endif; /*ends if(array_key_exists("database", $errors))*/ ?>
-        </div>
-
-        <div id="footer">
-            <div class="container">
-                <p class="muted credit">Design&amp;Coding <a href="http://twitter.com/zerrossetto">@Zerrossetto</a> per <a href="http://www.itimottura.it">ITI Mottura</a> (CL). Rilasciato sotto licenza <a href="http://www.gnu.org/licenses/agpl-3.0.txt">GPLv3</a>, <a href="https://github.com/Zerrossetto/itimottura">scarica il codice</a></p>
-          </div>
-        </div>
-
-    </body>
-</html>

@@ -30,17 +30,21 @@ if ($_POST["esito"] == "OK")
 {
 	if ($upd_ok) //do this only if row has been added
 	{
-		$mailer = new Mailer();
+		/*$mailer = new Mailer();
 		$mailer->send_mail($_POST["numeroOrdine"], $res["nome"], $res["classe"], 
-						   $res["importo"], $res["data_ins"], $res["data_esito"]);
+						   $res["importo"], $res["data_ins"], $res["data_esito"]);*/
 		setcookie("phpsession", $res["session_id"], time() - (session_cache_expire()*60));
 		session_id($res["session_id"]);
 		@session_destroy();
 	}
-	include("lib/ok.tpl.html");
+	$title = "Pagamento ".$_POST["numeroOrdine"]." autorizzato";
+	Helper::display_template("ok");
 }
 if ($_POST["esito"] == "KO")
-{ include("lib/ko.tpl.html"); }
+{ 
+	$title = "Pagamento ".$_POST["numeroOrdine"]." NON autorizzato";
+	Helper::display_template("ko");
+}
 
 ?>
 

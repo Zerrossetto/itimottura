@@ -22,6 +22,9 @@ class MACPoster {
 				}
 			}
 		}
+		$absurl = $_SERVER["REQUEST_SCHEME"]."://".$_SERVER["HTTP_HOST"] . dirname($_SERVER["SCRIPT_NAME"]) . "/";
+		$this->params["factory"]["urlOk"] = $absurl . $this->params["factory"]["urlOk"];
+		$this->params["factory"]["urlKo"] = $absurl . $this->params["factory"]["urlKo"];
 	}
 	
 	public function debug () {

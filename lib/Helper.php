@@ -3,10 +3,22 @@
 
 class Helper {
 
-	static function display_template($errors = array())
+	static function display_template($file, $errors = array())
 	{
+		global $title, $res;
 		$arr = parse_ini_file("lib/itimottura.ini.php");
-		include "lib/richiesta-comodato.tpl.html";
+		include "lib/header.tpl.html";
+		include "lib/".$file.".tpl.html";
+		include "lib/footer.tpl.html";
+	}
+	
+	static function pageFromPrefix($prefix)
+	{
+		$dict = array(	"COM_"=> "comodato.php",
+						"VIA_"=> "viaggi.php",
+						"SPO_"=> "sponsor.php",
+						"LOC_"=> "uso-locali.php");
+		return $dict[$prefix];
 	}
 
 	static function implodeDictionary ($glue, $pieces, $add_quotes = false)
