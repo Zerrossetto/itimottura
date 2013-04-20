@@ -1,8 +1,5 @@
-            <script type="text/javascript">
-            	var prezzi = {<?= implode(", ", Helper::implodeDictionary(":", $utility["tariffe"], true)); ?>};
-        	</script>
             <div class="page-header">
-                <h1>Comodato d&#39;uso <small>Richiesta di autorizzazione</small></h1>
+                <h1>Viaggi di istruzione <small>Richiesta di autorizzazione</small></h1>
             </div>
             <?php if(@$_POST["do"] == "validate" && array_key_exists("database", $errors)): ?>
             <div class="alert alert-error">
@@ -10,7 +7,7 @@
                 <p><?= $errors["database"]; ?></p>
             </div>
             <?php else: ?>
-            <p class="lead">Compila i campi sottostanti per procedere alla richiesta di comodato</p>
+            <p class="lead">Compila i campi sottostanti per procedere alla richiesta di pagamento del viaggio</p>
             <p>
                 <form method="post" action="<?= basename($_SERVER["SCRIPT_NAME"]) ?>">
                     <p>
@@ -32,45 +29,34 @@
                     </div>
                     <?php endif; ?>
                     <div class="well">
-                    	<div class="pull-left" style="padding-right: 60px;">
-	                        <label for="classe">Seleziona una classe</label>
-	                        <select name="classe" class="input-sel" onchange="updateprice(this.form)">
-	                            <option value="">---</option>
-	                            <?php foreach (range(1, 5) as $i): ?>
-<option value="<?= $i ?>"<?php if(@$_POST["classe"] == $i): ?> selected="selected"<?php endif; ?>><?= $i ?></option>
-	                            <?php endforeach; ?> 
-	                        </select>
-                    	</div>
-                    	<div class="pull-left" style="padding-right: 60px;">
-	                        <label for="sezione">Sezione</label>
-	                        <select name="sezione" class="input-sel" onchange="updateprice(this.form)">
-	                            <option value="">---</option>
-	                            <?php foreach ($utility["classi"] as $i): ?>
-<option value="<?= $i ?>"<?php if(@$_POST["sezione"] == $i): ?> selected="selected"<?php endif; ?>><?= $i ?></option>
-	                            <?php endforeach; ?>     
-	                        </select>
-                        </div>
-                        <div class="pull-right">
-                            <p>Quota comodato: </p>
+                        <label for="viaggio">Seleziona un viaggio</label>
+                        <select name="viaggio" style="width: 300px;" onchange="updateViaggio(this.form)">
+							<option value="">---</option>
+	                        <?php foreach ($utility["viaggi"] as $k=>$v): ?>
+<option value="<?= $k ?>"<?php if(@$_POST["currentViaggio"] == $v): ?> selected="selected"<?php endif; ?>><?= $v ?></option>
+							<?php endforeach; ?>
+						</select>
+                        <div class="pull-right" style="margin-top: -17px;">
+                            <p>Quota viaggio: </p>
                             <p><label id="quota" for="totale"><big><strong>&euro; N/A</strong></big></label></p>
                             <input type="hidden" name="totale" />
                         </div>
-                        <div class="clearfix">&nbsp;</div>
                     </div>
-                    <?php if(@$_POST["do"] == "validate" && array_key_exists("totale", $errors)): ?>
+                    <?php if(@$_POST["do"] == "validate" && array_key_exists("viaggio", $errors)): ?>
                     <div class="alert alert-error">
-                        <?= $errors["totale"] ?>
-                     </div>
+                        <?= $errors["viaggio"] ?>
+                    </div>
                     <?php endif; ?>
                     <p>
+                    	<input type="hidden" name="currentViaggio" />
                         <input type="hidden" name="tipoPagamento" value="CartCred" />
                         <input type="hidden" name="langCompratore" value="it" />
                         <input type="hidden" name="do" value="validate" />
                         <button type="submit" name="submit_btn" class="btn btn-primary btn-large disabled" disabled="disabled" onclick="this.form.submit()">Paga con carta di credito <img src="img/ucb-icn-g.png" alt="ucb-logo" style="width: 32px; height: 32px;" /></button>
                     </p>
                 </form>
-                <script type="text/javascript">
-            		var checkfields = new Array(document.forms[0].alunno, document.forms[0].emailCompratore, document.forms[0].classe, document.forms[0].classe);
-            	</script>
+			<script type="text/javascript">
+            	var checkfields = new Array(document.forms[0].alunno, document.forms[0].emailCompratore, document.forms[0].viaggio);
+            </script>
             <?php endif; /*ends if(array_key_exists("database", $errors))*/ ?>
         

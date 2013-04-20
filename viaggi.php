@@ -1,15 +1,14 @@
 <?php
 function __autoload($class_name) { include "lib/". $class_name . ".php"; } 
 
-$utility["title"] = "Modulo di pagamento comodati d&#39;uso";
+$utility["title"] = "Pagamento viaggi di istruzione";
 $tmp = parse_ini_file("lib/itimottura.ini.php", TRUE);
-$utility["classi"] = $tmp["lista_classi"]["classi"];
-$utility["tariffe"] = $tmp["tariffe_comodato"];
-$utility["bodyonload"] = " onload=\"updateprice(document.forms[0])\"";
+$utility["viaggi"] = $tmp["lista_viaggi"];
+$utility["bodyonload"] = " onload=\"updateViaggio(document.forms[0])\"";
 
 if (@$_POST["do"] != "validate")
 {
-	Helper::display_template("richiesta-comodato");
+	Helper::display_template("richiesta-viaggio");
 	die();
 }
 
@@ -33,11 +32,9 @@ if ($_POST["alunno"] == "")
 {
 	$errors["alunno"] = "Il nome dell&#39;alunno deve essere inserito";
 }
-if ($_POST["totale"] != 0)
+if ($_POST["viaggio"] == "")
 {
-	$settings["totaleOrdine"] = str_replace(".", "", $_POST["totale"]);
-} else {
-	$errors["totale"] = "Selezionare una sezione e una classe";
+	$errors["viaggio"] = "Devi selezionare un viaggio di istruzione valido";
 }
 if (!Helper::check_email_address($_POST["emailCompratore"]))
 {
@@ -54,23 +51,25 @@ if (count($errors) == 0)
 	setcookie("phpsession", session_id(), $_SESSION["timeout"]);
 	
 	//if there are no errors, then prepare commitment
-	$settings["numeroOrdine"] = "COM_". time() . str_pad(rand(0,999), 3, "0", STR_PAD_LEFT);
+	$settings["numeroOrdine"] = "VIA_". time() . str_pad(rand(0,999), 3, "0", STR_PAD_LEFT);
+	$settings["totaleOrdine"] = str_replace(".", "", $_POST["totale"]);
 	$settings["causalePagamento"] = "Al. ". $_POST["alunno"].
-									" Cl. ". $_POST["classe"].$_POST["sezione"].
-									" quota comodato";
-	$p = new Pupil($_POST["alunno"], $_POST["classe"], $_POST["sezione"], $_POST["emailCompratore"]);
+									" per ". $_POST["currentViaggio"].
+									" viaggio di istruzione";
+	
+	$p = new Pupil($_POST["alunno"], substr($_POST["currentViaggio"], 0, 1), substr($_POST["currentViaggio"], 1, 1), $_POST["emailCompratore"]);
 	try
 	{
-		$db->insertNewPayment($p, $settings["numeroOrdine"], $settings["totaleOrdine"], session_id());
+		$db->insertNewPayment($p, $settings["numeroOrdine"], $settings["totaleOrdine"], session_id(), "Viaggio ".$_POST["currentViaggio"]);
 	} catch (PDOException $e) { 
 		$errors["database"] = "Errore durante la scrittura dei dati:<br />". $e->getMessage();
-		Helper::display_template("richiesta-comodato");
+		Helper::display_template("richiesta-viaggio");
 		$db = null;
 		die();
 	}
 	//redirecting to UCB
 	$mp = new MACPoster(array_merge($_POST, $settings));
 	$mp->open_connection ();
-} else { Helper::display_template("richiesta-comodato", $errors); }
+} else { Helper::display_template("richiesta-viaggio", $errors); }
 
 ?>

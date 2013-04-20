@@ -1,16 +1,15 @@
             <div class="page-header">
-                <h1>Richiesta Comodato ID <?= $_POST["numeroOrdine"] ?> <small>Transazione eseguita</small></h1>
+                <h1><?= sprintf($utility["pageheader"], $_POST["numeroOrdine"]) ?> <small>Transazione eseguita</small></h1>
             </div>
             <p class="lead alert alert-success">Pagamento autorizzato</p>
-            <p>Hai completato la procedura di richiesta di comodato d&#39;uso utilizzando i seguenti dati:</p>
+            <p><?= $utility["pagebody"] ?></p>
            	<ul>
-           		<li><strong>ID pagamento</strong>: <?= $_POST["numeroOrdine"]; ?></li>
-           		<li><strong>Beneficiario</strong>: <?= $res["nome"]; ?>, classe <?= $res["classe"]; ?></li>
-           		<li><strong>Richiesta</strong>: <?= $res["data_ins"]; ?></li>
-           		<li><strong>Approvazione</strong>: <?= $res["data_esito"]; ?></li>
+           		<li><strong>ID pagamento</strong>: <?= $utility["numeroOrdine"]; ?></li>
+           		<li><strong>Beneficiario</strong>: <?= $utility["nome"]; ?></li>
+           		<?php if(isset($utility["causale"])): ?><li><strong>Causale</strong>: <?= $utility["causale"]; ?></li><?php endif; ?>
+           		<li><strong>Data della richiesta</strong>: <?= $utility["data_ins"]; ?></li>
+           		<li><strong>Data di approvazione</strong>: <?= $utility["data_esito"]; ?></li>
            	</ul>
            	<h3>Grazie!</h3>
            	<p class="lead">Ora puoi chiudere la finestra, se invece vuoi effettuare una nuova richiesta clicca sul pulsante <big>Nuova richiesta</big>.</p>
-           	<p><a href="<?= Helper::pageFromPrefix(substr($_POST["numeroOrdine"], 0, 4)) ?>" class="btn btn-primary btn-large">Nuova richiesta</a></p>
-          </div>
-          <div id="push"></div>
+           	<p><a href="." class="btn btn-primary btn-large">Nuova richiesta</a></p>

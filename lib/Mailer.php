@@ -2,15 +2,14 @@
 
 class Mailer {
 
-	private $header = "To: %s <%s>\nFrom: %s <%s>\n
-					   X-Mailer: PHP Mailer daemon\nMIME-Version: 1.0\n
-					   Content-Type: text/html; charset=\"UTF-8\"\n
-					   Content-Transfer-Encoding: 7bit\n\n";
+	private $to;
+	private $header = "To: %s <%s>\nFrom: %s <%s>\nX-Mailer: PHP Mailer daemon\nMIME-Version: 1.0\nContent-Type: text/html; charset=\"UTF-8\"\nContent-Transfer-Encoding: 7bit\n\n";
 	private $subject = "Ordine %s approvato";
 	private $body;
   
 	function __construct($to, $to_name, $from, $from_name)
 	{
+		$this->to = $to;
 		$this->header = sprintf($this->header, $to, $to_name, $from, $from_name);
 		$this->body = file_get_contents("lib/mail.tpl.html");
 	}

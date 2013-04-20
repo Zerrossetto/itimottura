@@ -1,33 +1,37 @@
             <div class="page-header">
-                <h1>Richiesta Comodato ID <?= $_POST["numeroOrdine"] ?> <small>Transazione negata</small></h1>
+                <h1><?= sprintf($utility["pageheader"], $_POST["numeroOrdine"]) ?> <small>Transazione negata</small></h1>
             </div>
             <p class="lead alert alert-error">Pagamento non autorizzato</p>
             <p>Il tuo pagamento non &egrave; stato accettato dai circuiti autorizzativi, a fronte di ulteriori tentativi negati di pagamento ti consigliamo di contattare l&#39;help desk della tua banca verificando il motivo del rifiuto.</p>
             <p>Successivamente potrai ritentare il pagamento.</p>
             <p>A seguire alcuni dati per il pagamento effettuato:</p>
 			<ul>
-				<li><strong>ID pagamento</strong>: <?= $_POST["numeroOrdine"]; ?></li>
-				<li><strong>Beneficiario</strong>: <?= $res["nome"]; ?>, classe <?= $res["classe"]; ?></li>
-				<li><strong>Richiesta</strong>: <?= $res["data_ins"]; ?></li>
+				<li><strong>ID pagamento</strong>: <?= $utility["numeroOrdine"]; ?></li>
+				<li><strong>Beneficiario</strong>: <?= $utility["nome"]; ?></li>
+				<?php if(isset($utility["causale"])): ?><li><strong>Causale</strong>: <?= $utility["causale"]; ?></li><?php endif; ?>
+				<li><strong>Data della richiesta</strong>: <?= $utility["data_ins"]; ?></li>
 			</ul>
 			<p class="lead">Se vuoi effettuare un nuovo tentativo di pagamento clicca su <big>Riprova</big>, per modificare la tua richiesta iniziale clicca su <big>Modifica</big>.</p>
-			<form name="retry" action="<?= Helper::pageFromPrefix(substr($_POST["numeroOrdine"], 0, 4)) ?>" method="post" class="pull-left" style="padding-right: 30px;">
-				<input type="hidden" name="alunno" value="<?= $res["nome"]; ?>" />
-				<input type="hidden" name="emailCompratore" value="<?= $res["email"]; ?>" />
-				<input type="hidden" name="classe" value="<?= substr($res["classe"], 0, 1); ?>" />
-				<input type="hidden" name="sezione" value="<?= substr($res["classe"], 1, 2); ?>" />
-				<input type="hidden" name="totale" value="<?= $res["importo"];; ?>" />
-				<input type="hidden" name="tipoPagamento" value="CartCred" />
+			<form name="retry" action="<?= $utility["pagename"] ?>" method="post" class="pull-left" style="padding-right: 30px;">
+				<?php if($utility["isPupil"]): ?><input type="hidden" name="alunno" value="<?= substr($utility["nome"], 0, -11); ?>" />
+				<?php else: ?><input type="hidden" name="azienda" value="<?= $utility["nome"]; ?>" />
+				<?php endif; ?><input type="hidden" name="emailCompratore" value="<?= $utility["email"]; ?>" />
+				<?php if($utility["isPupil"]): ?><input type="hidden" name="classe" value="<?= substr($utility["classe"], 0, 1); ?>" />
+				<input type="hidden" name="sezione" value="<?= substr($utility["classe"], 1, 2); ?>" />
+				<?php endif; ?><input type="hidden" name="totale" value="<?= number_format((float) $utility["importo"]/100, 2); ?>" />
+				<?php if(isset($utility["causale"])): $tmp = "causale"; ?><?php if(substr($utility["numeroOrdine"], 0, 4) == "VIA_") { $tmp = "viaggio"; }?><input type="hidden" name="<?= $tmp ?>" value="<?= $utility["causale"]; ?>" />
+				<?php endif; ?><input type="hidden" name="tipoPagamento" value="CartCred" />
 				<input type="hidden" name="langCompratore" value="it" />
 				<input type="hidden" name="do" value="validate" />
 				<button type="submit" class="btn btn-primary btn-large" onclick="this.form.submit()">Riprova <img src="img/ucb-icn-g.png" alt="ucb-logo" style="width: 32px; height: 32px;" /></button>
 			</form>
-            <form name="edit" action="<?= Helper::pageFromPrefix(substr($_POST["numeroOrdine"], 0, 4)) ?>" method="post">
-                <input type="hidden" name="alunno" value="<?= $res["nome"]; ?>" />
-                <input type="hidden" name="emailCompratore" value="<?= $res["email"]; ?>" />
-                <input type="hidden" name="classe" value="<?= substr($res["classe"], 0, 1); ?>" />
-                <input type="hidden" name="sezione" value="<?= substr($res["classe"], 1, 2); ?>" />
-                <button type="submit" class="btn btn-warning btn-large" onclick="this.form.submit()">Modifica <img src="img/mod.png" alt="mod-icon" /></button>
+            <form name="edit" action="<?= $utility["pagename"] ?>" method="post">
+                <?php if($utility["isPupil"]): ?><input type="hidden" name="alunno" value="<?= substr($utility["nome"], 0, -11); ?>" />
+				<?php else: ?><input type="hidden" name="azienda" value="<?= $utility["nome"]; ?>" />
+				<?php endif; ?><input type="hidden" name="emailCompratore" value="<?= $utility["email"]; ?>" />
+                <?php if($utility["isPupil"]): ?><input type="hidden" name="classe" value="<?= substr($utility["classe"], 0, 1); ?>" />
+                <input type="hidden" name="sezione" value="<?= substr($utility["classe"], 1, 2); ?>" />
+                <?php else: ?><input type="hidden" name="totale" value="<?= number_format((float) $utility["importo"]/100, 2); ?>" />
+                <?php endif; ?><?php if(isset($utility["causale"])): $tmp = "causale"; ?><?php if(substr($utility["numeroOrdine"], 0, 4) == "VIA_") { $tmp = "viaggio"; }?><input type="hidden" name="<?= $tmp ?>" value="<?= $utility["causale"]; ?>" />
+                <?php endif; ?><button type="submit" class="btn btn-warning btn-large" onclick="this.form.submit()">Modifica <img src="img/mod.png" alt="mod-icon" /></button>
             </form>
-          </div>
-          <div id="push"></div>

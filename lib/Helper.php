@@ -1,24 +1,25 @@
 <?php
 
-
 class Helper {
 
 	static function display_template($file, $errors = array())
 	{
-		global $title, $res;
-		$arr = parse_ini_file("lib/itimottura.ini.php");
+		global $utility;
 		include "lib/header.tpl.html";
 		include "lib/".$file.".tpl.html";
 		include "lib/footer.tpl.html";
 	}
 	
-	static function pageFromPrefix($prefix)
+	static function utilityFromPrefix($prefix)
 	{
-		$dict = array(	"COM_"=> "comodato.php",
-						"VIA_"=> "viaggi.php",
-						"SPO_"=> "sponsor.php",
-						"LOC_"=> "uso-locali.php");
-		return $dict[$prefix];
+		$u = parse_ini_file("lib/itimottura.ini.php", TRUE);
+		return $u[$prefix];
+		
+	}
+	
+	static function isPupil($prefix)
+	{
+		return in_array($prefix, array("COM_", "VIA_"));
 	}
 
 	static function implodeDictionary ($glue, $pieces, $add_quotes = false)
@@ -65,6 +66,13 @@ class Helper {
 		}
 
 		return true;
+	}
+	
+	static function sanitize_string($str)
+	{
+		$str = strip_tags($str);
+		$str = filter_var($str, FILTER_SANITIZE_STRING);
+		return substr($str, 0, 60);
 	}
 	
 } 

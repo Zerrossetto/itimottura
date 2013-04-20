@@ -1,17 +1,55 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title><?= $title; ?></title>
+        <title>ITI Mottura - <?= $utility["title"] ?></title>
         <meta http-equiv="content-type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <!-- Bootstrap -->
         <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
         <link href="css/main.css" rel="stylesheet" media="screen">
     </head>
-    <body onload="updateprice(document.forms[0])">
+    <body<?= @$utility["bodyonload"] ?>>
         <script type="text/javascript" src="js/jquery.js"></script>
         <script type="text/javascript" src="js/bootstrap.min.js"></script>
         <script type="text/javascript" src="js/main.js"></script>
+    <!-- NAVBAR
+    ================================================== -->
+    <div class="navbar-wrapper">
+      <!-- Wrap the .navbar in .container to center it within the absolutely positioned parent. -->
+      <div class="container">
+
+        <div class="navbar navbar-inverse">
+          <div class="navbar-inner">
+            <!-- Responsive Navbar Part 1: Button for triggering responsive navbar (not covered in tutorial). Include responsive CSS to utilize. -->
+            <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="brand" href="/">ITI Mottura</a>
+            <!-- Responsive Navbar Part 2: Place all navbar contents you want collapsed withing .navbar-collapse.collapse. -->
+            <div class="nav-collapse collapse">
+              <ul class="nav">
+                <li<?= (basename($_SERVER["SCRIPT_NAME"]) == "index.php") ? " class=\"active\"" : "" ?>><a href=".">Home</a></li>
+                <!-- Read about Bootstrap dropdowns at http://twitter.github.com/bootstrap/javascript.html#dropdowns -->
+                <li class="dropdown<?= (basename($_SERVER["SCRIPT_NAME"]) != "index.php") ? " active" : "" ?>">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Paga <b class="caret"></b></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="comodato.php">Libri in comodato d&apos;uso</a></li>
+                    <li><a href="viaggi.php">Viaggi di istruzione</a></li>
+                    <li class="divider"></li>
+                    <li><a href="sponsor.php">Sponsorizzazioni</a></li>
+                    <li><a href="uso-locali.php">Quote utilizzo locali</a></li>
+                  </ul>
+                </li>
+                <li><a href="mailto:pagamenti&#64;itimottura.it">Contattaci</a></li>
+              </ul>
+            </div><!--/.nav-collapse -->
+          </div><!-- /.navbar-inner -->
+        </div><!-- /.navbar -->
+
+      </div> <!-- /.container -->
+    </div><!-- /.navbar-wrapper -->
         <div id="wrap">
             <!-- Begin page content -->
             <div class="container">

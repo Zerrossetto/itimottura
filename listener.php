@@ -30,7 +30,11 @@ if (in_array($_GET["statoattuale"], array("IC", "KO", "AB"))) {
 	{
 		// check if order ID exists and the remote call is 
 		// the first in the order status update process
-		$mailer = new Mailer();
+		$to = "";
+		$to_name = "";
+		$from = "";
+		$from_name = "";
+		$mailer = new Mailer($to, $to_name, $from, $from_name);
 		$mailer->send_mail($_GET["numeroOrdine"], $res["nome"], $res["classe"], 
 						   $res["importo"], $res["data_ins"], $res["data_esito"]);
 		session_id($res["session_id"]);

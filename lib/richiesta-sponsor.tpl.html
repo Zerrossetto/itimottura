@@ -1,0 +1,62 @@
+            <div class="page-header">
+                <h1>Quota sponsorizzazione<br /> <small>Richiesta di autorizzazione</small></h1>
+            </div>
+            <?php if(@$_POST["do"] == "validate" && array_key_exists("database", $errors)): ?>
+            <div class="alert alert-error">
+                <p>Si &egrave; verificato un errore interno prego segnalare all&#39;amministratore di sistema.</p>
+                <p><?= $errors["database"]; ?></p>
+            </div>
+            <?php else: ?>
+            <p class="lead">Compila i campi per procedere alla richiesta di pagamento della quota</p>
+            <p>
+                <form method="post" action="<?= basename($_SERVER["SCRIPT_NAME"]) ?>">
+                    <p>
+                        <label for="azienda" >Nome dell&apos;azienda</label>
+                        <input type="text" name="azienda" maxlength="75" value="<?= @$_POST["azienda"] ?>" onblur="canTransmit(this.form)" onkeyup="canTransmit(this.form)" />
+                    </p>
+                    <?php if(@$_POST["do"] == "validate" && array_key_exists("alunno", $errors)): ?>
+                    <div class="alert alert-error">
+                        <?= $errors["alunno"] ?>
+                    </div>
+                    <?php endif; ?>
+                    <p>
+                        <label for="emailCompratore">Indirizzo e-mail</label>
+                        <input type="text" name="emailCompratore" value="<?= @$_POST["emailCompratore"] ?>" maxlength="50" onblur="canTransmit(this.form)" onkeyup="canTransmit(this.form)" />
+                    </p>
+                    <?php if(@$_POST["do"] == "validate" && array_key_exists("email", $errors)): ?>
+                    <div class="alert alert-error">
+                        <?= $errors["email"] ?>
+                    </div>
+                    <?php endif; ?>
+					<p>
+						<label for="totale">Importo della quota di sponsorizzazione</label>
+						<input 	type="text" name="totale" value="<?= isset($_POST["totale"]) ? $_POST["totale"] : 0 ?>" maxlength="7"
+								style="background:url(img/stock_euro.png) no-repeat scroll 7px 7px; padding-left:27px; width:185px;" 
+								onblur="extractNumber(this,2,false);" onkeyup="extractNumber(this,2,false);" onkeypress="return blockNonNumbers(this, event, true, false);"  />
+					<p>
+					<?php if(@$_POST["do"] == "validate" && array_key_exists("totale", $errors)): ?>
+                    <div class="alert alert-error">
+                        <?= $errors["totale"] ?>
+                    </div>
+                    <?php endif; ?>
+                    <p>
+						<label for="causale">Causale pagamento <small>(max. 60 caratteri)</small></label>
+						<textarea name="causale" value="<?= @$_POST["causale"] ?>" maxlength="60" wrap="soft" onblur="canTransmit(this.form)" onkeyup="canTransmit(this.form)"><?= @$_POST["causale"] ?></textarea>
+					<p>
+					<?php if(@$_POST["do"] == "validate" && array_key_exists("causale", $errors)): ?>
+                    <div class="alert alert-error">
+                        <?= $errors["causale"] ?>
+                    </div>
+                    <?php endif; ?>
+                    <p>
+                        <input type="hidden" name="tipoPagamento" value="CartCred" />
+                        <input type="hidden" name="langCompratore" value="it" />
+                        <input type="hidden" name="do" value="validate" />
+                        <button type="submit" name="submit_btn" class="btn btn-primary btn-large disabled" disabled="disabled" onclick="this.form.submit()">Paga con carta di credito <img src="img/ucb-icn-g.png" alt="ucb-logo" style="width: 32px; height: 32px;" /></button>
+                    </p>
+                </form>
+			<script type="text/javascript">
+            	var checkfields = new Array(document.forms[0].azienda, document.forms[0].emailCompratore, document.forms[0].totale, document.forms[0].causale);
+            </script>
+            <?php endif; /*ends if(array_key_exists("database", $errors))*/ ?>
+        
